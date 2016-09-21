@@ -170,6 +170,7 @@
     <div id ="dcf-content" class="overlay">
       <div class="scenario-manager-center">
         <img src="css/arrow.png" class="arrow-resize">
+        <img src="css/keyAssumptions.png" class="keyAssumptionsImg">
         <h3>Key Assumptions</h3>
           <p>Exit year EBITDA multiple: </p>
           <input type="text" id="ebitdaExit" data-toggle="tooltip" title="Terminal multiple at which any given project will be exited at year 5 (EV/EBITDA)">
@@ -248,6 +249,7 @@
 
     <div id="sensitivityAnalysis-content" class="col-sm-offset-2 col-sm-8 sensitivityAnalysis overlay">
       <img src="css/arrow.png" class="arrow-resize">
+      <img src="css/sensitivity.png" class="keyAssumptionsImg">
       <h4>Please give us your range of values for EBITDA multiples, WACC, and perpetuity growth rates, in order for us to generate a range of enterprise values</h4>
       <p>Please input as decimals</p>
       <form>
@@ -322,6 +324,49 @@
         </table>
 
         <div id="chart" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto; margin-top: 60px;"></div>
+        <button type="button" class="btn btn-info" aria-haspopup="true" aria-expanded="false" data-toggle="modal" data-target="#scModal">
+          Save Scenario
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="scModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Are you sure you want to save the following scenario?</h4>
+              </div>
+              <form>
+                <div class="modal-body">
+                  <p>Row Name: </p>
+                  <input type="text" id="addRowName">
+                  <p>Addition to or subtraction from EBITDA?</p>
+                  <select name="+/-">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                  </select>
+                  <p>Value for most recent annual (in USDm): </p>
+                  <input type="text" id="addRowAnnual">
+                  <p>Value for estimated y1 (in USDm): </p>
+                  <input type="text" id="addRowY1">
+                  <p>Value for estimated y2 (in USDm): </p>
+                  <input type="text" id="addRowY2">
+                  <p>Value for estimated y3 (in USDm): </p>
+                  <input type="text" id="addRowY3">
+                  <p>Value for estimated y4 (in USDm): </p>
+                  <input type="text" id="addRowY4">
+                  <p>Value for estimated y5 (in USDm): </p>
+                  <input type="text" id="addRowY5">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" id="addRow">Save scenario</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
     </div>
 
 

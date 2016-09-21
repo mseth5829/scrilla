@@ -109,6 +109,13 @@
     overflow-x: hidden;
 }
 
+.keyAssumptionsImg {
+  width: 5%;
+  display: block;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
 /*table style DCF analysis - formulated online*/
 
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;margin:0 auto;margin-top: 50px;}
