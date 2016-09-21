@@ -338,26 +338,11 @@
               </div>
               <form>
                 <div class="modal-body">
-                  <p>Row Name: </p>
-                  <input type="text" id="addRowName">
-                  <p>Addition to or subtraction from EBITDA?</p>
-                  <select name="+/-">
-                    <option value="+">+</option>
-                    <option value="-">-</option>
-                  </select>
-                  <p>Value for most recent annual (in USDm): </p>
-                  <input type="text" id="addRowAnnual">
-                  <p>Value for estimated y1 (in USDm): </p>
-                  <input type="text" id="addRowY1">
-                  <p>Value for estimated y2 (in USDm): </p>
-                  <input type="text" id="addRowY2">
-                  <p>Value for estimated y3 (in USDm): </p>
-                  <input type="text" id="addRowY3">
-                  <p>Value for estimated y4 (in USDm): </p>
-                  <input type="text" id="addRowY4">
-                  <p>Value for estimated y5 (in USDm): </p>
-                  <input type="text" id="addRowY5">
+                  <label for="name">Scenario name: </label>
+                  <input type="text" name="name" class="form-control">
                 </div>
+                  
+
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary" id="addRow">Save scenario</button>
