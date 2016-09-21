@@ -1,0 +1,173 @@
+#navigation {
+  font-family: garamond;
+}
+
+.scenario-manager-center {
+  text-align: center;
+  margin: 0 auto;
+  font-family: garamond;
+  padding-top: 20px;
+}
+
+.sensitivityAnalysis {
+  font-family: garamond;
+  text-align: center;
+}
+
+.main {
+  font-family: 'Garamond';
+  margin-top: 100px;
+}
+
+.main h1 {
+  font-size: 150px;
+}
+
+#taglines {
+  width: 50%;
+  float: right;
+  margin-top: -2%;
+
+}
+
+#mainBorder {
+  width: 100%;
+  margin-top: -230px;
+}
+
+#center {
+  font-family: 'garamond';
+  margin: 0 auto;
+  margin-top: 10%;
+  width: 80%;
+}
+
+.overlay {
+    display:none;
+}
+
+.arrow-resize {
+  width: 60%;
+}
+
+#dcf-content {
+  padding-bottom: 50px;
+}
+
+#submitAssumptions, #recalculate {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#chart{
+  min-width: 310px;
+  max-width: 800px;
+  height: 400px;
+  margin: 0 auto;
+  margin-top: 70px;
+}
+
+#ebitda, #presentValues, #npvOfUFCF, #impliedEVs, #pv {
+  border-top: 2px dotted grey;
+}
+
+.alert {
+  margin-top: 50px;
+}
+
+#bgImg {
+  width: 100%;
+  margin-top: -20%;
+  opacity: 0.5;
+}
+
+#scHeader{
+  margin: 0 auto;
+  width: 80%;
+  margin-top: -27.6%;
+  margin-left: 10%;
+  opacity: 0.9;
+}
+
+#scenario-header h1 {
+  font-size: 500%
+}
+
+#intro {
+  width: 70%;
+  display: block;
+  margin: 0 auto;
+}
+
+.dropdown-toggle {
+  margin-top: 10px;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+/*table style DCF analysis - formulated online*/
+
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;margin:0 auto;margin-top: 50px;}
+.tg td{font-family: garamond, sans-serif;font-size:14px;padding:3px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
+.tg th{font-family: garamond, sans-serif;font-size:14px;font-weight:normal;padding:3px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+.tg .tg-jo0b{background-color:#f9f9f9;font-weight:bold;vertical-align:top}
+.tg .tg-uzfi{background-color:#f9f9f9;font-weight:bold;text-align:center}
+.tg .tg-hgcj{font-weight:bold;text-align:center}
+.tg .tg-4eph{background-color:#f9f9f9}
+.tg .tg-b7b8{background-color:#f9f9f9;vertical-align:top}
+.tg .tg-yw4l{vertical-align:top}
+
+/*table style EV sensitivity analysis - formulated online*/
+
+.tp  {border-collapse:collapse;border-spacing:0;border-color:#ccc; margin:0 auto;margin-top: 50px;}
+.tp td{font-family: garamond, sans-serif;font-size:14px;padding:3px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
+.tp th{font-family: garamond, sans-serif;font-size:14px;font-weight:normal;padding:3px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+.tp .tg-ar96{background-color:#f9f9f9;color:#00009b;text-align:center}
+.tp .tg-uzfi{background-color:#f9f9f9;font-weight:bold;text-align:center}
+.tp .tg-spn1{background-color:#f9f9f9;text-align:center}
+.tp .tg-30rh{font-style:italic;text-align:center}
+.tp .tg-hgcj{font-weight:bold;text-align:center}
+.tp .tg-4eph{background-color:#f9f9f9}
+.tp .tg-l0zp{color:#00009b;text-align:center}
+.tp .tg-dzk6{background-color:#f9f9f9;text-align:center;vertical-align:top}
+.tp .tg-b7b8{background-color:#f9f9f9;vertical-align:top}
+.tp .tg-yw4l{vertical-align:top}
+
+
+@media only screen and (max-width: 820px) {
+  .main h1 {
+    font-size: 100px;
+  }
+
+  #mainBorder {
+    margin-top: -30%;
+  }
+
+  #taglines {
+    margin-top: -5%;
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  .navbar-left {
+    float: left !important;
+  }
+  #signup-link {
+    float: right;
+  }
+}
+
+@media only screen and (max-width: 440px) {
+  #mainBorder {
+    display: none;
+  }
+
+  #taglines {
+    margin-top: 0;
+    width: 100%;
+  }
+}

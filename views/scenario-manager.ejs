@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+      <div class="container" id="navigation">
+        <a class="navbar-brand navbar-left" href="/" style="font-weight: bold; font-size: 2em" >Scrilla</a>
+        <a class="navbar-brand navbar-left" href="/scenario-manager">Scenario Manager</a>
+        <%if(!currentUser) { %>
+          <p class="navbar-text navbar-right" id="signup-link"><a href="/auth/signup" class="navbar-link">Sign Up</a></p>
+          <p class="navbar-text navbar-right"><a href="/auth/login" class="navbar-link">Login</a></p>
+        <% } else {%>
+          <p class="navbar-text navbar-right"><a href="auth/update" class="navbar-link">Update Profile</a></p>
+          <p class="navbar-text navbar-right"><a href="auth/logout" class="navbar-link">Logout</a></p>
+        <% } %>
+      </div>
+    </nav>
+    <img src="css/bgimg.png" id="bgImg">
+    <img src="css/scHeader.png" id="scHeader">
+    <div id="scenario-content" class="scenario-manager-center">
+      <p id="intro">Welcome to the Scenario Manager.<br> Because we are working with sample data from an API, there is a limit to the kind of data we can procure and the companies from which we procure it. The dropdown list below includes all the data that would currently be available to you.<br> You may hover over inputs and key headers to get more information.</p>
+      <div class="btn-group">
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>Available Data
+        </button>
+        <div class="dropdown-menu scrollable-menu">
+            <% for(var i = 0; i<companyNames.length; i++){ %>
+              <a class="dropdown-item">
+                <span style="font-weight: bold">Company</span>: <%=companyNames[i]%><br> <span style="font-weight: bold">Ticker</span>: <%=companyTickers[i]%>
+                <p></p>
+              </a>
+            <% } %>
+        </div>
+      </div>
+      <h4>Enter ticker here: <input type="text" name="ticker"></h2>
+      <button id="getQuandl">get most current annual data</button>
+      <h3>Discounted Cash Flow Analysis</h3>
+      <h5>In USDM, fiscal year ended <span id="fye">----</span></h5>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Add financial data</h4>
+              <p>For subtractions please input numbers as negative values</p>
+            </div>
+            <div class="modal-body">
+              <p>Row Name: </p>
+              <input type="text" id="addRowName">
+              <p>Addition to or subtraction from EBITDA?</p>
+              <select name="+/-">
+                <option value="+">+</option>
+                <option value="-">-</option>
+              </select>
+              <p>Value for most recent annual (in USDm): </p>
+              <input type="text" id="addRowAnnual">
+              <p>Value for estimated y1 (in USDm): </p>
+              <input type="text" id="addRowY1">
+              <p>Value for estimated y2 (in USDm): </p>
+              <input type="text" id="addRowY2">
+              <p>Value for estimated y3 (in USDm): </p>
+              <input type="text" id="addRowY3">
+              <p>Value for estimated y4 (in USDm): </p>
+              <input type="text" id="addRowY4">
+              <p>Value for estimated y5 (in USDm): </p>
+              <input type="text" id="addRowY5">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="addRow">Add row</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-condensed" id="table">
+          <tr id="date">
+            <th></th>
+            <th>--</th>
+            <th>--</th>
+            <th>--</th>
+            <th>--</th>
+            <th>--</th>
+            <th>--</th>
+          </tr>
+          <tr id="revenue">
+            <td>Revenue</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr id="ebitda">
+            <td data-toggle="tooltip" title="Earnings before interest, taxes, depreciation and amortization">EBITDA</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr id="cfo">
+            <td>+Cash flow from Operations</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr id="netIncome">
+            <td>-Net Income</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr id="capex">
+            <td>-Capital Expenditures</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Period</td>
+            <td></td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr id="pv">
+            <td data-toggle="tooltip" title="Add up all (unlevered free) cash flows as stipulated above, and calcautes present value of each according to time period">Present value of UFCF</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr id="npv">
+            <td data-toggle="tooltip" title="Total sum of net present value of all unlevered free cash flows">Net Present value of UFCF</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+      </table>
+
+      <button type="button" class="btn btn-success" aria-haspopup="true" aria-expanded="false" data-toggle="modal" data-target="#myModal">Add row</button><br>
+      <button id="recalculate">Recalculate</button>
+
+    </div>
+
+    <div id ="dcf-content" class="overlay">
+      <div class="scenario-manager-center">
+        <img src="css/arrow.png" class="arrow-resize">
+        <h3>Key Assumptions</h3>
+          <p>Exit year EBITDA multiple: </p>
+          <input type="text" id="ebitdaExit" data-toggle="tooltip" title="Terminal multiple at which any given project will be exited at year 5 (EV/EBITDA)">
+          <p>Perpetuity growth rate: </p>
+          <input type="text" id="perpetuityGrowthRate" data-toggle="tooltip" title="Rate at which cash flows will grow in perpetuity (typically between the historical inflation rate of 2-3% and the historical GDP growth rate of 4-5%)"><br>
+        <button id="submitAssumptions">Submit Assumptions</button>
+      </div>
+
+      <table class="tg">
+        <tr>
+          <th class="tg-hgcj" colspan="5">Discounted Cash Flow Analysis - Results</th>
+        </tr>
+        <tr>
+          <td class="tg-hgcj" colspan="2">EBITDA Method</td>
+          <td class="tg-031e"></td>
+          <td class="tg-hgcj" colspan="2">Perpetuity Method</td>
+        </tr>
+        <tr id="exitYear">
+          <td class="tg-031e">Exit Year EBITDA</td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e">Exit Year UFCF</td>
+          <td class="tg-031e"></td>
+        </tr>
+        <tr id="mainInputs">
+          <td class="tg-031e">Multiple</td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e">Growth Rate</td>
+          <td class="tg-031e"></td>
+        </tr>
+        <tr id="terminalValues">
+          <td class="tg-031e">Terminal EBITDA Value</td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e">Terminal Perpetuity Value</td>
+          <td class="tg-031e"></td>
+        </tr>
+        <tr id="periods">
+          <td class="tg-031e">Periods</td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e">Periods</td>
+          <td class="tg-031e"></td>
+        </tr>
+        <tr id="WACCs">
+          <td class="tg-031e">WACC</td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e"></td>
+          <td class="tg-031e">WACC</td>
+          <td class="tg-031e"></td>
+        </tr>
+        <tr id="presentValues">
+          <td class="tg-yw4l" data-toggle="tooltip" title="Present value of terminal EBITDA value based on your input assumptions">PV of Exit Year EBITDA</td>
+          <td class="tg-yw4l"></td>
+          <td class="tg-yw4l"></td>
+          <td class="tg-yw4l" data-toggle="tooltip" title="Present value of terminal perpetuity value based on your input assumptions">PV of Exit Year Perpetuity Value</td>
+          <td class="tg-yw4l"></td>
+        </tr>
+        <tr id="npvOfUFCF">
+          <td class="tg-yw4l" data-toggle="tooltip" title="NPV of UFCF over projected 5 years calculated above">NPV of UFCF</td>
+          <td class="tg-yw4l"></td>
+          <td class="tg-yw4l"></td>
+          <td class="tg-yw4l" data-toggle="tooltip" title="NPV of UFCF over projected 5 years calculated above">NPV of UFCF</td>
+          <td class="tg-yw4l"></td>
+        </tr>
+        <tr id="impliedEVs">
+          <td class="tg-9hbo">Implied Enterprise Value</td>
+          <td class="tg-yw4l"></td>
+          <td class="tg-yw4l"></td>
+          <td class="tg-9hbo">Implied Enterprise Value</td>
+          <td class="tg-yw4l"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="sensitivityAnalysis-content" class="col-sm-offset-2 col-sm-8 sensitivityAnalysis overlay">
+      <img src="css/arrow.png" class="arrow-resize">
+      <h4>Please give us your range of values for EBITDA multiples, WACC, and perpetuity growth rates, in order for us to generate a range of enterprise values</h4>
+      <p>Please input as decimals</p>
+      <form>
+        <div class="form-group">
+          <label for="ebitdaStep">EBITDA step</label>
+          <input type="text" name="ebitdaStep" class="form-control" placeholder="e.g. : input of '1' will produce a range of the current multiple +/- 1">
+        </div>
+        <div class="form-group">
+          <label for="waccStep">WACC step</label>
+          <input type="text" name="waccStep" class="form-control" placeholder="e.g. : input of '0.02' will produce a range of the current multiple +/- 2%">
+        </div>
+        <div class="form-group">
+          <label for="grStep">Growth rate step</label>
+          <input type="text" name="grStep" class="form-control" placeholder="e.g. : input of '0.002' will produce a range of the current multiple +/- 0.2%">
+        </div>
+        <div class="form-group">
+          <button id="submitRange">Create sensitivity analysis</button>
+        </div>
+      </form>
+
+      <table class="tp" style="undefined;table-layout: fixed; width: 595px">
+
+          <tr>
+            <th class="tg-hgcj" colspan="7">Enterprise Value Sensitivity Analysis</th>
+          </tr>
+          <tr>
+            <td class="tg-uzfi" colspan="3">EBITDA Method</td>
+            <td class="tg-4eph"></td>
+            <td class="tg-uzfi" colspan="3">Perpetuity Method</td>
+          </tr>
+          <tr>
+            <td class="tg-30rh" colspan="3">EBITDA multiple range</td>
+            <td class="tg-l0zp">WACC range:</td>
+            <td class="tg-30rh" colspan="3">Perpetuity growth rate range:</td>
+          </tr>
+          <tr id="inputRanges">
+            <td class="tg-spn1"></td>
+            <td class="tg-spn1"></td>
+            <td class="tg-dzk6"></td>
+            <td class="tg-ar96"></td>
+            <td class="tg-4eph"</td>
+            <td class="tg-4eph"></td>
+            <td class="tg-b7b8"></td>
+          </tr>
+          <tr id="waccRange1">
+            <td class="tg-031e"></td>
+            <td class="tg-031e"></td>
+            <td class="tg-yw4l"></td>
+            <td class="tg-l0zp"></td>
+            <td class="tg-031e"></td>
+            <td class="tg-031e"></td>
+            <td class="tg-yw4l"></td>
+          </tr>
+          <tr id="waccRange2">
+            <td class="tg-4eph"></td>
+            <td class="tg-4eph"></td>
+            <td class="tg-b7b8"></td>
+            <td class="tg-ar96"></td>
+            <td class="tg-4eph"></td>
+            <td class="tg-4eph"></td>
+            <td class="tg-b7b8"></td>
+          </tr>
+          <tr id="waccRange3">
+            <td class="tg-031e"></td>
+            <td class="tg-031e"></td>
+            <td class="tg-yw4l"></td>
+            <td class="tg-l0zp"></td>
+            <td class="tg-031e"></td>
+            <td class="tg-031e"></td>
+            <td class="tg-yw4l"></td>
+          </tr>
+        </table>
+
+        <div id="chart" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto; margin-top: 60px;"></div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"   integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8="   crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/jquery.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/4.2.2/modules/exporting.js"></script>
+    <script src="./js/editable.js"></script>
+    <script src="./js/numericInput.js"></script>
+    <script src="./js/dcf.js"></script>
+    <script src="./js/ufcf.js"></script>
+    <script> var companyTickers= <%- JSON.stringify(companyTickers) %> </script>
+  </body>
+</html>

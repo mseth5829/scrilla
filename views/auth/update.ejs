@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+      <div class="container" id="navigation">
+        <a class="navbar-brand navbar-left" href="/" style="font-weight: bold; font-size: 2em" >Scrilla</a>
+        <a class="navbar-brand navbar-left" href="/scenario-manager">Scenario Manager</a>
+        <%if(!currentUser) { %>
+          <p class="navbar-text navbar-right" id="signup-link"><a href="./signup" class="navbar-link">Sign Up</a></p>
+          <p class="navbar-text navbar-right"><a href="./login" class="navbar-link">Login</a></p>
+        <% } else {%>
+          <p class="navbar-text navbar-right"><a href="./update" class="navbar-link">Update Profile</a></p>
+          <p class="navbar-text navbar-right"><a href="./logout" class="navbar-link">Logout</a></p>
+        <% } %>
+      </div>
+    </nav>
+      <% include ../partials/alerts %>
+    <div id= "center">
+      <h4>Enter what you want to have changed below</h4>
+      <form method="POST" action="/auth/update?_method=PUT">
+
+        <div class="form-group">
+          <label for="name">Name: </label>
+          <input type="text" name="name" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email: </label>
+          <input type="text" name="email" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password: </label>
+          <input type="password" name="password" class="form-control">
+        </div>
+
+        <button type="submit"> Submit </button>
+      </form>
+    </div>
+
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  </body>
+</html>
