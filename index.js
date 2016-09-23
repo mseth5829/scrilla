@@ -38,6 +38,8 @@ app.use( function(req, res, next) {
   next()
 });
 
+
+
 //Getting db available company data for use in Scenario Manager
 var companyNames = [];
 var companyTickers = [];
