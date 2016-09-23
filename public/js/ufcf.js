@@ -1,3 +1,4 @@
+//Get sample company data
 var companyOptions = $(".dropdown-menu a")
 for(var i = 0 ; i<companyOptions.length ; i++){
   companyOptions[i].addEventListener("click", fillInput(i))
@@ -8,6 +9,7 @@ function fillInput(numberClicked){
     search(event,companyTickers[numberClicked]);
   }
 }
+
 
 $(function() {
   $("#getQuandl").on("click",search);
@@ -20,15 +22,15 @@ $(document).ready(function(){
 //Variables to be used for dcf analysis (separate file)
 var wacc
 var totalPV = 0
-
+var ticker
 
 //On search, get data
 function search(event,companyClick) {
   event.preventDefault();
   if(!companyClick){
-    var ticker = $("input[name=ticker]").val();
+    ticker = $("input[name=ticker]").val();
   }else{
-    var ticker = companyClick;
+    ticker = companyClick;
   }
   // "CSCO"
   var urlRevenue = "https://www.quandl.com/api/v3/datasets/ZFB/"+ticker+"_TOT_REVNU_A.json?api_key=nuNBBsNJx2dfRJ_dhsgc";

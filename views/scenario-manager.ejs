@@ -15,8 +15,9 @@
           <p class="navbar-text navbar-right" id="signup-link"><a href="/auth/signup" class="navbar-link">Sign Up</a></p>
           <p class="navbar-text navbar-right"><a href="/auth/login" class="navbar-link">Login</a></p>
         <% } else {%>
-          <p class="navbar-text navbar-right"><a href="auth/update" class="navbar-link">Update Profile</a></p>
           <p class="navbar-text navbar-right"><a href="auth/logout" class="navbar-link">Logout</a></p>
+          <p class="navbar-text navbar-right"><a href="auth/profile" class="navbar-link">Profile</a></p>
+          <p class="navbar-text navbar-right"><a href="auth/update" class="navbar-link">Update Profile</a></p>
         <% } %>
       </div>
     </nav>
@@ -323,35 +324,13 @@
           </tr>
         </table>
 
+        <inputklasdn>
         <div id="chart" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto; margin-top: 60px;"></div>
-        <button type="button" class="btn btn-info" aria-haspopup="true" aria-expanded="false" data-toggle="modal" data-target="#scModal">
+        <p>Scenario name: </p>
+        <input id="scenarioName" type="text" placeholder="If you are saving this scenario type name in here"><br>
+        <button type="button" class="btn btn-info" aria-haspopup="true" aria-expanded="false" id="saveScenario">
           Save Scenario
         </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="scModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Are you sure you want to save the following scenario?</h4>
-              </div>
-              <form>
-                <div class="modal-body">
-                  <label for="name">Scenario name: </label>
-                  <input type="text" name="name" class="form-control">
-                </div>
-                  
-
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" id="addRow">Save scenario</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
     </div>
 
 

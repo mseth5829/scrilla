@@ -33,6 +33,7 @@ app.use(function(req, res, next) {
 app.use( function(req, res, next) {
   if(req.session.passport){
     res.locals.currentUser = req.session.passport.user
+    res.locals.userNow = req.user
   }
   next()
 });
@@ -58,6 +59,47 @@ app.get('/scenario-manager', isLoggedIn, function(req, res) {
 
 app.use('/auth', require('./controllers/auth'));
 
-var server = app.listen(3000);
+app.post('/scn', function(req,res){
+  var name = req.body.name;
+  var ticker = req.body.ticker;
+  var ebitdaArray = req.body.ebitdaArray;
+  var waccArray = req.body.waccArray;
+  var grArray = req.body.grArray;
+  var finalYearEbitda = req.body.finalYearEbitda;
+  var finalYearUFCF = req.body.finalYearUFCF;
+  var ebitdaMultiple = req.body.ebitdaMultiple;
+  var perpetuityGrowthRate = req.body.perpetuityGrowthRate;
+  var pvEbitdaMethod = req.body.pvEbitdaMethod;
+  var evForEbitdaMethod = req.body.evForEbitdaMethod;
+  var terminalPerpetuityValue = req.body.terminalPerpetuityValue;
+  var pvPerpetuityMethod = req.body.pvPerpetuityMethod;
+  var evForPerpetuityMethod = req.body.evForPerpetuityMethod;
+  var totalPV = req.body.totalPV;
+  db.user.findById(req.user.id).then(function(user) {
+    user.createScenario({
+      name: name,
+      ticker: ticker,
+      ebitdaArray: ebitdaArray,
+      waccArray: waccArray,
+      grArray: grArray,
+      finalYearEbitda: finalYearEbitda,
+      finalYearUFCF: finalYearUFCF,
+      ebitdaMultiple: ebitdaMultiple,
+      perpetuityGrowthRate: perpetuityGrowthRate,
+      pvEbitdaMethod: pvEbitdaMethod,
+      evForEbitdaMethod: evForEbitdaMethod,
+      terminalPerpetuityValue: terminalPerpetuityValue,
+      pvPerpetuityMethod: pvPerpetuityMethod,
+      evForPerpetuityMethod: evForPerpetuityMethod,
+      totalPV: totalPV
+    }).then(function(scenario) {
+      console.log(scenario.get());
+    });
+  });
+  res.json( {redirectTo: '/'} )
+})
+
+
+var server = app.listen(process.env.PORT || 3000);
 
 module.exports = server;

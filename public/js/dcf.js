@@ -3,11 +3,19 @@ $(function() {
 });
 
 
-//Variables to be used in both dcf and sensitivity analysis
+//Variables to be used in dcf and sensitivity analysis and data storage
 var finalYearEbitda
 var finalYearUFCF
 var ebitdaMultiple
 var perpetuityGrowthRate
+var pvEbitdaMethod
+var evForEbitdaMethod
+var terminalPerpetuityValue
+var pvPerpetuityMethod
+var evForPerpetuityMethod
+var ticker = ticker
+var totalPV = totalPV
+
 
 function dcfAnalysis() {
   $('#sensitivityAnalysis-content').fadeIn(700);
@@ -16,12 +24,12 @@ function dcfAnalysis() {
   finalYearUFCF = Number($("#pv td:nth-child(6)").text());
   ebitdaMultiple = Number($("#ebitdaExit").val());
   perpetuityGrowthRate = Number($("#perpetuityGrowthRate").val());
-  var pvEbitdaMethod = Math.round((finalYearEbitda*ebitdaMultiple)/(Math.pow((1+wacc),5)));
+  pvEbitdaMethod = Math.round((finalYearEbitda*ebitdaMultiple)/(Math.pow((1+wacc),5)));
 
-  var evForEbitdaMethod = Math.round(totalPV + (finalYearEbitda*ebitdaMultiple)/(Math.pow((1+wacc),5)));
-  var terminalPerpetuityValue = Math.round(((finalYearUFCF)*(1+perpetuityGrowthRate))/(wacc-perpetuityGrowthRate));
-  var pvPerpetuityMethod = Math.round(terminalPerpetuityValue / (Math.pow(1+wacc,5)) );
-  var evForPerpetuityMethod = Math.round(totalPV + terminalPerpetuityValue / (Math.pow(1+wacc,5)));
+  evForEbitdaMethod = Math.round(totalPV + (finalYearEbitda*ebitdaMultiple)/(Math.pow((1+wacc),5)));
+  terminalPerpetuityValue = Math.round(((finalYearUFCF)*(1+perpetuityGrowthRate))/(wacc-perpetuityGrowthRate));
+  pvPerpetuityMethod = Math.round(terminalPerpetuityValue / (Math.pow(1+wacc,5)) );
+  evForPerpetuityMethod = Math.round(totalPV + terminalPerpetuityValue / (Math.pow(1+wacc,5)));
 
 //Fill up DCF Analysis table
   $("#exitYear td:nth-child(2)").text(finalYearEbitda);
@@ -58,9 +66,9 @@ $('form').submit(function(e) {
     return (Math.round(totalPV + (finalYearEbitda*newEbitda)/(Math.pow((1+newWacc),5))));
   }
 
-  var ebitdaArray = [ebitdaMultiple-ebitdaStep,ebitdaMultiple,ebitdaMultiple+ebitdaStep];
-  var waccArray = [wacc-waccStep,wacc,wacc+waccStep];
-  var grArray = [perpetuityGrowthRate-grStep,perpetuityGrowthRate,perpetuityGrowthRate+grStep];
+  ebitdaArray = [ebitdaMultiple-ebitdaStep,ebitdaMultiple,ebitdaMultiple+ebitdaStep];
+  waccArray = [wacc-waccStep,wacc,wacc+waccStep];
+  grArray = [perpetuityGrowthRate-grStep,perpetuityGrowthRate,perpetuityGrowthRate+grStep];
 
 
 //create range for inputs
@@ -69,8 +77,6 @@ $('form').submit(function(e) {
     $("#inputRanges td:nth-child(" + (i+1) + ")").text(ebitdaArray[i]+"x");
     $("#waccRange" + (i+1) + " td:nth-child(4)").text(Math.round((waccArray[i])*100)+"%");
     $("#inputRanges td:nth-child(" +(i+5) + ")").text( Math.round(((grArray[i]) * 100) * 100) / 100+"%");
-    console.log("waccRange" + (i+1) + " td:nth-child(4)")
-    console.log("waccRange: "+Math.round((waccArray[i])*100)+"%")
 //results row 1
     $("#waccRange1 td:nth-child(" + (i+1) + ")").text(calculateEVforEbitdaMethod(finalYearEbitda,ebitdaArray[i],waccArray[0]));
     $("#waccRange1 td:nth-child("+ (i+5) + ")").text(calculateEVForPerpetuityMethod(finalYearUFCF,grArray[i],waccArray[0]));
@@ -105,11 +111,6 @@ $('form').submit(function(e) {
           legend: {
             reversed: true
           },
-          tooltip: {
-            formatter: function () {
-              return 'Upper bound: '+ this.points[i].total
-            }
-          },
           plotOptions: {
             series: {
               stacking: 'normal'
@@ -129,3 +130,34 @@ $('form').submit(function(e) {
   });
 
 });
+
+var scenarioName = $("#scenarioName").val();
+
+
+//Save Scenario
+$("#saveScenario").on("click", function(){
+  var data = {
+    name: scenarioName,
+    ticker: ticker,
+    ebitdaArray: ebitdaArray.toString(),
+    waccArray: waccArray.toString(),
+    grArray: grArray.toString(),
+    finalYearEbitda: finalYearEbitda,
+    finalYearUFCF: finalYearUFCF,
+    ebitdaMultiple: ebitdaMultiple,
+    perpetuityGrowthRate: perpetuityGrowthRate,
+    pvEbitdaMethod: pvEbitdaMethod,
+    evForEbitdaMethod: evForEbitdaMethod,
+    terminalPerpetuityValue:terminalPerpetuityValue,
+    evForPerpetuityMethod:evForPerpetuityMethod,
+    pvPerpetuityMethod: pvPerpetuityMethod,
+    totalPV: totalPV
+  }
+  $.ajax({
+    url:'/scn',
+    type: 'POST',
+    data: data
+  }).done( function (data){
+    window.location = data.redirectTo
+  })
+})

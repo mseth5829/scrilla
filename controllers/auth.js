@@ -84,4 +84,22 @@ router.put("/update", function(req, res) {
 });
 
 
+
+
+// router.get('/profile', function(req,res){
+//   db.user.findOne().then(function(user) {
+//     user.getScenarios().then(function(scenarios) {
+//       console.log(scenarios)
+//     });
+//   });
+//
+//
+//   // db.user.findById(req.user.id).then(function(user) {
+//   //   user.getScenarios().then(function(scenarios) {
+//   //     // console.log(scenarios)
+//   //   });
+//   // });
+//   // res.render('auth/profile', {scenarios: scenarios})
+// })
+
 module.exports = router;

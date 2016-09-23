@@ -54,7 +54,7 @@
   padding-bottom: 50px;
 }
 
-#submitAssumptions, #recalculate {
+#submitAssumptions, #recalculate, #saveScenario {
   margin-top: 10px;
   margin-bottom: 10px;
 }
